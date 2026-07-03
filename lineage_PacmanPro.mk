@@ -36,7 +36,7 @@ AXION_CAMERA_REAR_INFO := 50,50
 AXION_CAMERA_FRONT_INFO := 50
 
 # Maintainer name (underscores become spaces in the UI)
-AXION_MAINTAINER := Shravan 
+AXION_MAINTAINER := Darkmet98_Vega 
 
 # Processor name (underscores become spaces)
 AXION_PROCESSOR := Mediatek_Dimensity_7350_Pro 
