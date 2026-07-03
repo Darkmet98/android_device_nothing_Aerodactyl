@@ -71,5 +71,5 @@ persist.sys.perf.scroll_opt = true
 # 0 - Disable heavy app classification
 # 1 - Enable dynamic detection (based on frame duration and buffer load)
 # 2 - Treat all apps as heavy for performance
-persist.sys.perf.scroll_opt.heavy_app = 2
+persist.sys.perf.scroll_opt.heavy_app = 1
 
