@@ -245,14 +245,6 @@ PRODUCT_COPY_FILES += \
 # NTF
 $(call inherit-product, hardware/nothing/nt-fwk/nt-fwk.mk)
 
-# IMS boot jars — system_ext_specific stripped from vendor Android.bp
-PRODUCT_BOOT_JARS += \
-    mediatek-ims-base \
-    mediatek-ims-common \
-    mediatek-telecom-common \
-    mediatek-telephony-base \
-    mediatek-telephony-common
-
 # Overlays
 $(call inherit-product, hardware/mediatek/overlay/mssi.mk)
 
