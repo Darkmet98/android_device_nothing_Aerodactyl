@@ -245,14 +245,6 @@ PRODUCT_COPY_FILES += \
 # NTF
 $(call inherit-product, hardware/nothing/nt-fwk/nt-fwk.mk)
 
-# IMS boot jars — AxionOS doesn't process ;BOOT_JAR from proprietary-files.txt
-PRODUCT_BOOT_JARS += \
-    mediatek-ims-base \
-    mediatek-ims-common \
-    mediatek-telecom-common \
-    mediatek-telephony-base \
-    mediatek-telephony-common
-
 # Overlays
 $(call inherit-product, hardware/mediatek/overlay/mssi.mk)
 
