@@ -52,6 +52,10 @@ PERF_ANIM_OVERRIDE := true
 GPU_FREQS_PATH := /sys/devices/platform/soc/13000000.mali/devfreq/13000000.mali/available_frequencies
 GPU_MIN_FREQ_PATH := /sys/devices/platform/soc/13000000.mali/devfreq/13000000.mali/min_freq
 
+# Axion native Kernel Manager
+PRODUCT_COPY_FILES += \
+    device/nothing/Aerodactyl/configs/axion/ax_kernel_manager.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/ax_kernel_manager.xml
+
 # High Brightness Mode (HBM)
 HBM_SUPPORTED := true 
 
