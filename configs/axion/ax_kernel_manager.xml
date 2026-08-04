@@ -6,7 +6,11 @@
         minId="axion_min_freq"
         maxId="axion_max_freq"
         governorId="little_cpu_governor"
-        path="/sys/devices/system/cpu/cpufreq/policy0" />
+        minNode="/sys/devices/system/cpu/cpufreq/policy0/scaling_min_freq"
+        maxNode="/sys/devices/system/cpu/cpufreq/policy0/scaling_max_freq"
+        availablePath="/sys/devices/system/cpu/cpufreq/policy0/scaling_available_frequencies"
+        governorNode="/sys/devices/system/cpu/cpufreq/policy0/scaling_governor"
+        governorAvailablePath="/sys/devices/system/cpu/cpufreq/policy0/scaling_available_governors" />
 
     <cpu
         id="big"
@@ -14,10 +18,15 @@
         minId="axion_min_freq_big"
         maxId="axion_max_freq_big"
         governorId="big_cpu_governor"
-        path="/sys/devices/system/cpu/cpufreq/policy6" />
+        minNode="/sys/devices/system/cpu/cpufreq/policy6/scaling_min_freq"
+        maxNode="/sys/devices/system/cpu/cpufreq/policy6/scaling_max_freq"
+        availablePath="/sys/devices/system/cpu/cpufreq/policy6/scaling_available_frequencies"
+        governorNode="/sys/devices/system/cpu/cpufreq/policy6/scaling_governor"
+        governorAvailablePath="/sys/devices/system/cpu/cpufreq/policy6/scaling_available_governors" />
 
     <gpu
         node="/sys/devices/platform/soc/13000000.mali/devfreq/13000000.mali"
+        currentNode="/sys/devices/platform/soc/13000000.mali/devfreq/13000000.mali/cur_freq"
         availablePath="/sys/devices/platform/soc/13000000.mali/devfreq/13000000.mali/available_frequencies"
         usageNode="/sys/kernel/ged/hal/gpu_utilization"
         frequencyMultiplier="1" />

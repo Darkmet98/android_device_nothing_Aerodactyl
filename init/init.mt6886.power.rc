@@ -36,12 +36,6 @@ on init
     write /dev/cpuset/restricted/cpus 0-3
     write /dev/cpuset/camera-daemon/cpus 0-7
 
-    # sched
-    write /proc/sys/kernel/sched_migration_cost_ns 250000
-    write /proc/sys/kernel/sched_latency_ns 4000000
-    write /proc/sys/kernel/sched_min_granularity_ns 500000
-    write /proc/sys/kernel/sched_wakeup_granularity_ns 2000000
-
 on charger
     # UFS
     write /sys/devices/platform/soc/112b0000.ufshci/clkgate_enable 1
@@ -149,7 +143,7 @@ on property:sys.boot_completed=1
     # Utilization Clamping
     # Tuning
     write /proc/sys/kernel/sched_util_clamp_min_rt_default 0
-    write /proc/sys/kernel/sched_util_clamp_min 128
+    write /proc/sys/kernel/sched_util_clamp_min 1024
 
     # rt
     write /dev/cpuctl/rt/cpu.uclamp.latency_sensitive 1
