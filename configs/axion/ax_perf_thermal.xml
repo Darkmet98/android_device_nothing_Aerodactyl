@@ -156,7 +156,7 @@
                     <action unit="cpu" status="24"/>
                 </level>
             </app>
-            <app pkgs="com.instagram.android,com.facebook.mlite,com.whatsApp,com.google.android.apps.tachyon,com.snapchat.android,us.zoom.videomeetings,com.tencent.wemeet.app,com.ss.android.lark,com.microsoft.teams">
+            <app pkgs="com.instagram.android,com.facebook.mlite,com.whatsapp,com.google.android.apps.tachyon,com.snapchat.android,us.zoom.videomeetings,com.tencent.wemeet.app,com.ss.android.lark,com.microsoft.teams">
                 <level id="4">
                     <action unit="cpu" status="14"/>
                 </level>
