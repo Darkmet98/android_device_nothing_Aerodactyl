@@ -52,7 +52,7 @@ PERF_ANIM_OVERRIDE := true
 GPU_FREQS_PATH := /sys/devices/platform/soc/13000000.mali/devfreq/13000000.mali/available_frequencies
 GPU_MIN_FREQ_PATH := /sys/devices/platform/soc/13000000.mali/devfreq/13000000.mali/min_freq
 
-# Axion native Kernel Manager
+# Axion native Kernel Manager (Pacman sysfs layout)
 PRODUCT_COPY_FILES += \
     device/nothing/Aerodactyl/configs/axion/ax_kernel_manager.xml:$(TARGET_COPY_OUT_SYSTEM_EXT)/etc/ax_kernel_manager.xml
 
@@ -67,10 +67,4 @@ TORCH_STR_SUPPORTED := true
 TARGET_NEEDS_DOZE_FIX := true
 
 TARGET_INCLUDES_LOS_PREBUILTS := false
-
-# ScrollOptimizer
-# heavy_app: 0 = disabled, 1 = dynamic detection, 2 = all apps
-PRODUCT_PRODUCT_PROPERTIES += \
-    persist.sys.perf.scroll_opt=true \
-    persist.sys.perf.scroll_opt.heavy_app=1
 
