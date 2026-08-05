@@ -164,6 +164,12 @@ PRODUCT_PACKAGES += \
     android.hardware.health-service.mediatek-recovery
 
 $(call soong_config_set,lineage_health,charging_control_charging_path,/proc/charger/usb_charger_en)
+# /proc/charger/usb_charger_en is inverted on this platform: 0 enables, 1 disables.
+$(call soong_config_set,lineage_health,charging_control_charging_enabled,0)
+$(call soong_config_set,lineage_health,charging_control_charging_disabled,1)
+# This proc node only exposes a simple charge on/off toggle.
+$(call soong_config_set,lineage_health,charging_control_supports_bypass,false)
+$(call soong_config_set,lineage_health,charging_control_supports_toggle,true)
 
 PRODUCT_PACKAGES += \
     vendor.lineage.health-service.default
