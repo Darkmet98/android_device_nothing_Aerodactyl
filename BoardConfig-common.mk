@@ -112,6 +112,8 @@ TARGET_KERNEL_EXT_MODULES := \
 
 TARGET_KERNEL_ADDITIONAL_FLAGS += \
     TOP=$(abspath .) \
+    BRANCH=android13-5.15 \
+    KMI_GENERATION=8 \
     TARGET_BUILD_VARIANT=user \
     BT_PLATFORM=6886 \
     LOG_TAG=[BT_Drv][btif] \
