@@ -1,0 +1,29 @@
+#
+# SPDX-FileCopyrightText: 2026 The AxionOS Project
+# SPDX-License-Identifier: Apache-2.0
+#
+
+LOCAL_PATH := $(call my-dir)
+
+ifneq ($(filter Pacman PacmanPro,$(TARGET_DEVICE)),)
+MT6886_KERNEL_OUT := $(TARGET_OUT_INTERMEDIATES)/KERNEL_OBJ
+MT6886_KERNEL_IMAGE := $(MT6886_KERNEL_OUT)/arch/$(TARGET_ARCH)/boot/$(BOARD_KERNEL_IMAGE_NAME)
+MT6886_MODULE_SIGNING_KEY_SOURCE := kernel/nothing/mt6886/certs/mtk_signing_key.pem
+MT6886_MODULE_SIGNING_KEY_COMPAT := $(MT6886_KERNEL_OUT)/certs/signing_key.pem
+MT6886_DTB_IMAGE := $(PRODUCT_OUT)/dtb.img
+MT6886_DTBO_DIR := $(TARGET_OUT_INTERMEDIATES)/DTB_OBJ/arch/$(TARGET_ARCH)/boot/dts
+MT6886_DTBO_IMAGE := $(BOARD_PREBUILT_DTBOIMAGE)
+MT6886_MKDTBOIMG := $(HOST_OUT_EXECUTABLES)/mkdtboimg$(HOST_EXECUTABLE_SUFFIX)
+
+$(MT6886_MODULE_SIGNING_KEY_COMPAT): $(MT6886_MODULE_SIGNING_KEY_SOURCE)
+	@echo "Installing MT6886 module signing key"
+	@mkdir -p $(dir $@)
+	@cp -f $< $@
+
+$(MT6886_KERNEL_IMAGE): $(MT6886_MODULE_SIGNING_KEY_COMPAT)
+
+$(MT6886_DTBO_IMAGE): $(PRODUCT_OUT)/kernel $(MT6886_DTB_IMAGE) $(MT6886_MKDTBOIMG) $(BOARD_DTBO_CFG)
+	@echo "Building MT6886 dtbo.img"
+	@mkdir -p $(dir $@)
+	$(MT6886_MKDTBOIMG) cfg_create $@ $(BOARD_DTBO_CFG) -d $(MT6886_DTBO_DIR)
+endif

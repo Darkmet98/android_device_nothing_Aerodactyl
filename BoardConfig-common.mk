@@ -6,7 +6,8 @@
 BUILD_BROKEN_DUP_RULES := true
 
 DEVICE_PATH := device/nothing/Aerodactyl
-KERNEL_PATH := $(DEVICE_PATH)-kernel
+KERNEL_SOURCE := kernel/nothing/mt6886
+KERNEL_MODULES := kernel/nothing/vendor/mediatek/kernel_modules
 
 # Architecture
 TARGET_ARCH := arm64
@@ -72,32 +73,71 @@ BOARD_KERNEL_IMAGE_NAME := Image.lz4
 BOARD_USES_GENERIC_KERNEL_IMAGE := true
 BOARD_INCLUDE_DTB_IN_BOOTIMG := true
 
+# Build kernel, DTB, DTBO and modules from Nothing's MT6886 sources.
+TARGET_KERNEL_SOURCE := $(KERNEL_SOURCE)
+TARGET_KERNEL_CONFIG := gki_defconfig
+TARGET_KERNEL_CONFIG_EXT := \
+    $(DEVICE_PATH)/configs/kernel/mgk_64_k515.config \
+    $(KERNEL_SOURCE)/arch/arm64/configs/lineage.config
+TARGET_KERNEL_CLANG_COMPILE := true
+TARGET_KERNEL_CLANG_PATH := $(abspath prebuilts/clang/host/linux-x86/clang-r450784e)
+TARGET_KERNEL_LLVM_BINUTILS := true
+KERNEL_LTO := thin
+
+TARGET_KERNEL_DTB := \
+    mediatek/mt6886.dtb \
+    mediatek/k6886v1_64.dtbo \
+    mediatek/k6886v1_64_1.dtbo \
+    mediatek/k6886v1_64_2.dtbo
+TARGET_DTB_LIST_WILDCARD := mediatek/mt6886
+TARGET_NEEDS_DTBOIMAGE := true
+BOARD_KERNEL_SEPARATED_DTBO := true
+TARGET_KERNEL_DTBO := dtbo.img
+BOARD_PREBUILT_DTBOIMAGE = $(TARGET_OUT_INTERMEDIATES)/DTBO_OBJ/arch/$(TARGET_ARCH)/boot/$(TARGET_KERNEL_DTBO)
+BOARD_DTBO_CFG := $(DEVICE_PATH)/configs/kernel/mkdtboimg.cfg
+
+TARGET_KERNEL_EXT_MODULE_ROOT := $(KERNEL_MODULES)
+TARGET_KERNEL_EXT_MODULES := \
+    connectivity/common \
+    connectivity/connfem \
+    connectivity/conninfra \
+    connectivity/bt/mt66xx/btif \
+    connectivity/fmradio \
+    connectivity/gps/data_link/plat/v051 \
+    connectivity/gps/gps_pwr \
+    connectivity/gps/gps_scp \
+    connectivity/wlan/adaptor \
+    connectivity/wlan/core/gen4m \
+    gpu
+
+TARGET_KERNEL_ADDITIONAL_FLAGS += \
+    TOP=$(abspath .) \
+    TARGET_BUILD_VARIANT=user \
+    BT_PLATFORM=6886 \
+    LOG_TAG=[BT_Drv][btif] \
+    CONFIG_FM_USER_LOAD=1 \
+    CONFIG_MTK_COMBO_WIFI_HIF=axi \
+    CONNAC_VER=2_0 \
+    MTK_ANDROID_EMI=y \
+    MTK_ANDROID_WMT=y \
+    MTK_COMBO_CHIP=CONNAC2X2_SOC7_0 \
+    MTK_WLAN_SERVICE=yes \
+    WIFI_IP_SET=1 \
+    WLAN_CHIP_ID=6886
+
 BOARD_SYSTEM_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/system_dlkm.modules.load))
 BOARD_VENDOR_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/vendor_dlkm.modules.load))
 BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/vendor_ramdisk.modules.load))
 BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD := $(strip $(shell cat $(DEVICE_PATH)/vendor_ramdisk.modules.load.recovery))
 
-TARGET_PREBUILT_KERNEL := $(KERNEL_PATH)/$(BOARD_KERNEL_IMAGE_NAME)
-TARGET_PREBUILT_KERNEL_HEADERS := $(KERNEL_PATH)/kernel-uapi-headers.tar.gz
-BOARD_PREBUILT_DTBIMAGE_DIR := $(KERNEL_PATH)/dtb
+# kernel.mk requires an explicit source-module selection for vendor_boot.
+# The *_MODULES_LOAD variables only control load order; they do not copy .ko files.
+BOOT_KERNEL_MODULES := $(sort \
+    $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD) \
+    $(BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD))
 
-BOARD_KERNEL_MODULE_DIR := $(KERNEL_PATH)/modules
-BOARD_SYSTEM_KERNEL_MODULES := $(addprefix $(BOARD_KERNEL_MODULE_DIR)/,$(BOARD_SYSTEM_KERNEL_MODULES_LOAD))
-BOARD_VENDOR_KERNEL_MODULES := $(addprefix $(BOARD_KERNEL_MODULE_DIR)/,$(BOARD_VENDOR_KERNEL_MODULES_LOAD))
-
-ALL_VENDOR_RAMDISK_MODULES := $(sort $(BOARD_VENDOR_RAMDISK_KERNEL_MODULES_LOAD) $(BOARD_VENDOR_RAMDISK_RECOVERY_KERNEL_MODULES_LOAD))
-BOARD_VENDOR_RAMDISK_KERNEL_MODULES := $(addprefix $(BOARD_KERNEL_MODULE_DIR)/,$(ALL_VENDOR_RAMDISK_MODULES))
-
-BOARD_VENDOR_KERNEL_MODULES += \
-    $(BOARD_KERNEL_MODULE_DIR)/bt_drv_6886.ko \
-    $(BOARD_KERNEL_MODULE_DIR)/connfem.ko \
-    $(BOARD_KERNEL_MODULE_DIR)/conninfra.ko \
-    $(BOARD_KERNEL_MODULE_DIR)/fmradio_drv_connac2x.ko \
-    $(BOARD_KERNEL_MODULE_DIR)/gps_drv_dl_v051.ko \
-    $(BOARD_KERNEL_MODULE_DIR)/gps_pwr.ko \
-    $(BOARD_KERNEL_MODULE_DIR)/gps_scp.ko \
-    $(BOARD_KERNEL_MODULE_DIR)/wlan_drv_gen4m_6886.ko \
-    $(BOARD_KERNEL_MODULE_DIR)/wmt_chrdev_wifi_connac2.ko
+# Source builds use module basenames; kernel.mk resolves and packages their paths.
+SYSTEM_KERNEL_MODULES := $(BOARD_SYSTEM_KERNEL_MODULES_LOAD)
 
 # Partitions
 AB_OTA_PARTITIONS += \
