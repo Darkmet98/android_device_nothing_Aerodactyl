@@ -79,7 +79,8 @@ TARGET_KERNEL_CONFIG := gki_defconfig
 TARGET_KERNEL_CONFIG_EXT := \
     $(DEVICE_PATH)/configs/kernel/mgk_64_k515.config \
     $(KERNEL_SOURCE)/arch/arm64/configs/lineage.config \
-    $(DEVICE_PATH)/configs/kernel/opt_a_bbr.config
+    $(DEVICE_PATH)/configs/kernel/opt_a_bbr.config \
+    $(DEVICE_PATH)/configs/kernel/opt_c1_perf.config
 TARGET_KERNEL_CLANG_COMPILE := true
 TARGET_KERNEL_CLANG_PATH := $(abspath prebuilts/clang/host/linux-x86/clang-r450784e)
 TARGET_KERNEL_LLVM_BINUTILS := true
